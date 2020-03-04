@@ -1,0 +1,4 @@
+curl "localhost:5353/resolve?name=17.142.160.59\\&type=PTR"
+curl "localhost:5353/resolve?name=147.229.9.23\\&type=PTR"
+curl "localhost:5353/resolve?name=46.255.231.42\\&type=PTR"
+curl "localhost:5353/resolve?name=  46.255.231.42    \\&type=PTR"

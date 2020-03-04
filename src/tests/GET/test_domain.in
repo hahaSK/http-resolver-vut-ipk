@@ -1,0 +1,4 @@
+curl "localhost:5353/resolve?name=apple.com\\&type=A"
+curl "localhost:5353/resolve?name=www.fit.vubr.cz\\&type=A"
+curl "localhost:5353/resolve?name=ihned.cz\\&type=A"
+curl "localhost:5353/resolve?name=  ihned.cz    \\&type=A"
