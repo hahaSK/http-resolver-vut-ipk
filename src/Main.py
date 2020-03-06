@@ -1,3 +1,4 @@
+import ipaddress
 import socket
 import sys
 import re
@@ -93,6 +94,17 @@ def parse_post_dns_entry(dns_entry):
     return match[1].strip(), match[2]
 
 
+def check_dns_type_call(dns, dns_type):
+    """ Checks if the dns matches the dns_type"""
+    try:
+        ipaddress.ip_address(dns)
+        if dns_type == 'A':
+            raise BadRequestException400()
+    except ValueError:
+        if dns_type == 'PTR':
+            raise BadRequestException400()
+
+
 def run_socket(s):
     """ Runs the socket and resolve POST and GET methods. """
     s.listen()
@@ -126,15 +138,20 @@ def run_socket(s):
             body = ''
             if http_request == 'GET':
                 try:
+                    check_dns_type_call(dns, dns_type)
                     body = resolve_dns(dns, dns_type)
                 except NotFoundException404:
                     response.http_404_not_found_reply()
+                    continue
+                except BadRequestException400:
+                    response.http_400_bad_request_reply()
                     continue
             else:
                 entry_ok = False
                 for dns_entry in request_body:
                     try:
                         dns, dns_type = parse_post_dns_entry(dns_entry)
+                        check_dns_type_call(dns, dns_type)
                         body += (resolve_dns(dns, dns_type))
                         entry_ok = True
                     except NotFoundException404:
