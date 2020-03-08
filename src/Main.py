@@ -72,10 +72,10 @@ def resolve_dns(dns, dns_type):
 
     if dns_type == 'A':
         # domain name:A = ip address
-        body = f"{dns}:{dns_type}={address_name_ip[2][0]}\n"
+        body = f"{dns}:{dns_type}={address_name_ip[2][0]}\r\n"
     else:
         # ip address:PTR = domain name
-        body = f"{dns}:{dns_type}={address_name_ip[0]}\n"
+        body = f"{dns}:{dns_type}={address_name_ip[0]}\r\n"
 
     return body
 

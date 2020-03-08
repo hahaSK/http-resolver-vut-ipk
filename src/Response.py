@@ -45,12 +45,12 @@ class Response:
         }
 
     def __reply__(self, body, **kwargs):
-        response_headers_raw = bytes(''.join('%s: %s\n' % (k, v) for k, v in self.__get_response_headers__(body).items()
+        response_headers_raw = bytes(''.join('%s: %s\r\n' % (k, v) for k, v in self.__get_response_headers__(body).items()
                                              ), self.encoding)
 
         # Reply as HTTP / 1.1 server, saying for example "HTTP/1.1 OK"(code200).
         response_status = bytes(
-            f'{self.protocol} {kwargs.get("response_status")} {kwargs.get("response_status_text")}\n',
+            f'{self.protocol} {kwargs.get("response_status")} {kwargs.get("response_status_text")}\r\n',
             self.encoding)
 
         self.__send__(response_status, response_headers_raw, body)
@@ -59,5 +59,5 @@ class Response:
         self.conn.send(status)
 
         self.conn.send(response_headers)
-        self.conn.send(bytes('\n', self.encoding))  # to separate headers from body
+        self.conn.send(bytes('\r\n', self.encoding))  # to separate headers from body
         self.conn.send(bytes(body, self.encoding))
